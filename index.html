@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vehicle Service Management System</title>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+    font-family: Arial, sans-serif;
+    background: #f4f4f4;
+    margin: 0;
+}
+
+header {
+    background: #007bff;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+
+.container {
+    width: 90%;
+    max-width: 1000px;
+    margin: 20px auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px #ccc;
+}
+
+input, select {
+    display: block;
+    width: 100%;
+    padding: 12px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+button {
+    background: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 5px;
+}
+
+button:hover { background: #0056b3; }
+
+.delete-btn { background: #dc3545; }
+
+.table-wrap { overflow-x: auto; }
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: center;
+}
+
+th { background: #007bff; color: white; }
+
+@media (max-width: 600px) {
+    .container { width: 95%; padding: 12px; }
+    header h1 { font-size: 23px; }
+}
+</style>
+</head>
+
+<body>
+<header>
+    <h1>Vehicle Service Management System</h1>
+</header>
+
+<div class="container">
+    <h2>Add Service Record</h2>
+
+    <form id="serviceForm">
+        <input type="text" id="owner"
+               placeholder="Owner Name" required>
+
+        <input type="text" id="vehicle"
+               placeholder="Vehicle Number" required>
+
+        <select id="service">
+            <option>Oil Change</option>
+            <option>Engine Service</option>
+            <option>Washing</option>
+            <option>Tyre Replacement</option>
+        </select>
+
+        <button type="submit">Add Record</button>
+    </form>
+
+    <h2>Service Records</h2>
+
+    <div class="table-wrap">
+        <table>
+            <thead>
+                <tr>
+                    <th>Owner Name</th>
+                    <th>Vehicle Number</th>
+                    <th>Service Type</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="records"></tbody>
+        </table>
+    </div>
+</div>
+
+<script>
+const form = document.getElementById("serviceForm");
+const records = document.getElementById("records");
+
+form.addEventListener("submit", function(event) {
+    event.preventDefault();
+
+    const owner = document.getElementById("owner").value.trim();
+    const vehicle = document.getElementById("vehicle").value.trim();
+    const service = document.getElementById("service").value;
+
+    if (!owner || !vehicle) {
+        alert("Please fill all fields");
+        return;
+    }
+
+    const row = records.insertRow();
+
+    [owner, vehicle, service].forEach(function(value) {
+        const cell = row.insertCell();
+        cell.textContent = value;
+    });
+
+    const actionCell = row.insertCell();
+    const deleteButton = document.createElement("button");
+
+    deleteButton.textContent = "Delete";
+    deleteButton.className = "delete-btn";
+    deleteButton.type = "button";
+
+    deleteButton.addEventListener("click", function() {
+        row.remove();
+    });
+
+    actionCell.appendChild(deleteButton);
+    form.reset();
+});
+</script>
+
+</body>
+</html>
